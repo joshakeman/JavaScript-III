@@ -53,13 +53,13 @@ CharacterStats.prototype.takeDamage = function() {
   * should inherit takeDamage() from CharacterStats
 */
 
-function Humanoid(h_arg) {
-  this.team = h_arg.team;
-  this.weapons = h_arg.weapons;
-  this.language = h_arg.language;
+function Humanoid(hu_arg) {
+  this.team = hu_arg.team;
+  this.weapons = hu_arg.weapons;
+  this.language = hu_arg.language;
   // Do I need both the lines below this, or just the second one?
-  GameObject.call(this,h_arg);
-  CharacterStats.call(this,h_arg);
+  GameObject.call(this,hu_arg);
+  CharacterStats.call(this,hu_arg);
 }
 
 Humanoid.prototype = Object.create(CharacterStats.prototype);
@@ -143,6 +143,21 @@ Humanoid.prototype.greet = function() {
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
 
+function Hero(he_arg) {
+    Humanoid.call(this,he_arg);
+}
+Hero.prototype = Object.create(Humanoid.prototype);
+Hero.prototype.attack = function(target) {
+  let random_num = Math.floor(Math.random() * 10) + 1;
+  let damage_done = target.healthPoints - random_num;
+  target.healthPoints = damage_done;
+  if (damage_done <= 0) {
+    return `${this.name} launches an attack on ${target.name} and does ${random_num} points of damage! ${target.name} was killed! ` + target.destroy();
+  } else {
+      return `${this.name} launches an attack on ${target.name} and does ${random_num} points of damage! ${target.name} now has ${damage_done} health points left.`;
+  }
+}
+
 function Villain(v_arg) {
     Humanoid.call(this,v_arg);
 }
@@ -151,7 +166,11 @@ Villain.prototype.attack = function(target) {
   let random_num = Math.floor(Math.random() * 10) + 1;
   let damage_done = target.healthPoints - random_num;
   target.healthPoints = damage_done;
-  return `${this.name} launches an attack on ${target.name} and does ${random_num} points of damage! ${target.name} now has ${damage_done} health points left.`;
+  if (damage_done <= 0) {
+    return `${this.name} launches an attack on ${target.name} and does ${random_num} points of damage! ${target.name} was killed! ` + target.destroy();
+  } else {
+      return `${this.name} launches an attack on ${target.name} and does ${random_num} points of damage! ${target.name} now has ${damage_done} health points left.`;
+  }
 }
 
 const evilGuy = new Villain ({
@@ -172,6 +191,35 @@ const evilGuy = new Villain ({
 
 });
 
+const heroGuy = new Hero ({
+  createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 8,
+      height: 5,
+    },
+    healthPoints: 13,
+    name: 'Hero Guy',
+    team: 'Good',
+    weapons: [
+      'Sword',
+      'Spear',
+    ],
+    language: 'Normal',
+
+});
+
+console.log(swordsman.healthPoints);
 console.log(evilGuy.attack(swordsman));
 console.log(swordsman.healthPoints);
+console.log(evilGuy.attack(swordsman));
+console.log(evilGuy.attack(swordsman));
+
+console.log(swordsman.healthPoints);
+console.log(heroGuy.attack(archer));
+console.log(swordsman.healthPoints);
+console.log(heroGuy.attack(archer));
+console.log(heroGuy.attack(archer));
+
+
 
