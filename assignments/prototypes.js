@@ -57,6 +57,7 @@ function Humanoid(h_arg) {
   this.team = h_arg.team;
   this.weapons = h_arg.weapons;
   this.language = h_arg.language;
+  // Do I need both the lines below this, or just the second one?
   GameObject.call(this,h_arg);
   CharacterStats.call(this,h_arg);
 }
@@ -125,19 +126,52 @@ Humanoid.prototype.greet = function() {
     language: 'Elvish',
   });
 
-  console.log(mage.createdAt); // Today's date
-  console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
-  console.log(swordsman.healthPoints); // 15
-  console.log(mage.name); // Bruce
-  console.log(swordsman.team); // The Round Table
-  console.log(mage.weapons); // Staff of Shamalama
-  console.log(archer.language); // Elvish
-  console.log(archer.greet()); // Lilith offers a greeting in Elvish.
-  console.log(mage.takeDamage()); // Bruce took damage.
-  console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
+  // console.log(mage.createdAt); // Today's date
+  // console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
+  // console.log(swordsman.healthPoints); // 15
+  // console.log(mage.name); // Bruce
+  // console.log(swordsman.team); // The Round Table
+  // console.log(mage.weapons); // Staff of Shamalama
+  // console.log(archer.language); // Elvish
+  // console.log(archer.greet()); // Lilith offers a greeting in Elvish.
+  // console.log(mage.takeDamage()); // Bruce took damage.
+  // console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
 
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+function Villain(v_arg) {
+    Humanoid.call(this,v_arg);
+}
+Villain.prototype = Object.create(Humanoid.prototype);
+Villain.prototype.attack = function(target) {
+  let random_num = Math.floor(Math.random() * 10) + 1;
+  let damage_done = target.healthPoints - random_num;
+  target.healthPoints = damage_done;
+  return `${this.name} launches an attack on ${target.name} and does ${random_num} points of damage! ${target.name} now has ${damage_done} health points left.`;
+}
+
+const evilGuy = new Villain ({
+  createdAt: new Date(),
+    dimensions: {
+      length: 5,
+      width: 3,
+      height: 9,
+    },
+    healthPoints: 18,
+    name: 'Evil Guy',
+    team: 'Doooooom',
+    weapons: [
+      'Axe',
+      'Mace',
+    ],
+    language: 'Evil',
+
+});
+
+console.log(evilGuy.attack(swordsman));
+console.log(swordsman.healthPoints);
+
