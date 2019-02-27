@@ -17,9 +17,9 @@
 */
 
 function GameObject(go_arg) {
-  this.createdAt = createdAt;
-  this.name = name;
-  this.dimensions = dimensions;
+  this.createdAt = go_arg.createdAt;
+  this.name = go_arg.name;
+  this.dimensions = go_arg.dimensions;
 }
 
 GameObject.prototype.destroy = function () {
@@ -34,7 +34,7 @@ GameObject.prototype.destroy = function () {
 */
 
 function CharacterStats(cs_arg) {
-  this.healthPoints = healthPoints;
+  this.healthPoints = cs_arg.healthPoints;
   GameObject.call(this,cs_arg);
 }
 //How do I check in console if inheritance is working correctly?
@@ -54,10 +54,11 @@ CharacterStats.prototype.takeDamage = function() {
 */
 
 function Humanoid(h_arg) {
-  this.team = team;
-  this.weapons = weapons;
-  this.language = language;
-  CharacterStats.call(this,cs_arg);
+  this.team = h_arg.team;
+  this.weapons = h_arg.weapons;
+  this.language = h_arg.language;
+  GameObject.call(this,h_arg);
+  CharacterStats.call(this,h_arg);
 }
 
 Humanoid.prototype = Object.create(CharacterStats.prototype);
@@ -73,7 +74,7 @@ Humanoid.prototype.greet = function() {
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
+
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -134,7 +135,7 @@ Humanoid.prototype.greet = function() {
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
+
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
