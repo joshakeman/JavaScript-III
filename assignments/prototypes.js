@@ -16,12 +16,32 @@
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
 
+function GameObject(go_arg) {
+  this.createdAt = createdAt;
+  this.name = name;
+  this.dimensions = dimensions;
+}
+
+GameObject.prototype.destroy = function () {
+  return `${this.name} was removed from the game.`
+}
+
 /*
   === CharacterStats ===
   * healthPoints
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
+
+function CharacterStats(cs_arg) {
+  this.healthPoints = healthPoints;
+  GameObject.call(this,cs_arg);
+}
+//How do I check in console if inheritance is working correctly?
+CharacterStats.prototype = Object.create(GameObject.prototype);
+CharacterStats.prototype.takeDamage = function() {
+  return `${this.name} took damage.`
+}
 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
@@ -32,6 +52,18 @@
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
+
+function Humanoid(h_arg) {
+  this.team = team;
+  this.weapons = weapons;
+  this.language = language;
+  CharacterStats.call(this,cs_arg);
+}
+
+Humanoid.prototype = Object.create(CharacterStats.prototype);
+Humanoid.prototype.greet = function() {
+  return `${this.name} offers a greeting in ${this.language}.`
+}
  
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
